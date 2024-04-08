@@ -13,7 +13,7 @@ class TicTacToe:
     def is_draw(self):
         # Check if the game is a draw
         for row in self.board:
-            if ' ' in row:
+            if ' ' in row:                      #If atleast one cell is empty, ret false.
                 return False
         return True
 
@@ -22,12 +22,12 @@ class TicTacToe:
         # Check rows
         for row in self.board:
             if row.count(row[0]) == len(row) and row[0] != ' ':
-                return row[0]
+                return row[0]                       # return player mark
         # Check columns
-        for col in range(len(self.board[0])):
+        for col in range(len(self.board[0])):       # range(len(row))
             check = []
             for row in self.board:
-                check.append(row[col])
+                check.append(row[col])              # Iterating vertically
             if check.count(check[0]) == len(check) and check[0] != ' ':
                 return check[0]
         # Check diagonals
@@ -35,7 +35,7 @@ class TicTacToe:
             return self.board[0][0]
         if self.board[0][2] == self.board[1][1] == self.board[2][0] != ' ':
             return self.board[0][2]
-        return False
+        return False            # Default
 
     def dfs(self, board, depth, player):
         # Step 5: DFS logic to choose the best move
@@ -49,10 +49,10 @@ class TicTacToe:
             return {'score': 0}  # Draw
 
         if player == 'X':
-            best = {'score': -float('inf')}
+            best = {'score': -float('inf')}           # Init score to -inf
             symbol = 'X'
         else:
-            best = {'score': float('inf')}
+            best = {'score': float('inf')}            # Init socre to inf
             symbol = 'O'
 
         for i in range(3):
@@ -60,8 +60,8 @@ class TicTacToe:
                 if board[i][j] == ' ':
                     board[i][j] = symbol
                     score = self.dfs(board, depth + 1, 'O' if player == 'X' else 'X')
-                    board[i][j] = ' '
-                    score['row'] = i
+                    board[i][j] = ' '       # Undoing the move after exploration
+                    score['row'] = i        # Recording the cordinates
                     score['col'] = j
 
                     if player == 'X':

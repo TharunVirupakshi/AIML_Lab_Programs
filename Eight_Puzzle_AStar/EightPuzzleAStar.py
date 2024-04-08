@@ -23,13 +23,15 @@ class Puzzle:
 
     def get_possible_moves(self, state):
         possible_moves = []
-        zero_pos = np.where(state == 0)
+        zero_pos = np.where(state == 0) 
+        #get the zero pos This returns a tuple containing the row and column indices of the empty space.
+
         directions = [(0, -1), (0, 1), (-1, 0), (1, 0)]  # Left, Right, Up, Down
         for direction in directions:
             new_pos = (zero_pos[0] + direction[0], zero_pos[1] + direction[1])
             if 0 <= new_pos[0] < 3 and 0 <= new_pos[1] < 3:  # Check boundaries
                 new_state = np.copy(state)
-                new_state[zero_pos], new_state[new_pos] = new_state[new_pos], new_state[zero_pos]  # Swap
+                new_state[zero_pos], new_state[new_pos] = new_state[new_pos], new_state[zero_pos]  # Swap Tiles
                 possible_moves.append(new_state)
         return possible_moves
 
@@ -56,7 +58,7 @@ class Puzzle:
         return None
 
 # Test the function
-initial_state = np.array([[2, 8, 1], [0, 4, 3], [7, 6, 5]])
+initial_state = np.array([[2, 8, 3], [1, 6, 4], [7, 0, 5]])
 goal_state = np.array([[1, 2, 3], [8, 0, 4], [7, 6, 5]])
 puzzle = Puzzle(initial_state, goal_state)
 solution = puzzle.solve()

@@ -65,7 +65,7 @@ print("Predictions:", class_names[y_pred])
 
 
 
-### Optional confusion matrix
+# ### Optional confusion matrix
 
 from sklearn.metrics import confusion_matrix, classification_report
 # Print confusion matrix

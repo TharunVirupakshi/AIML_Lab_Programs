@@ -6,12 +6,24 @@ from sklearn.model_selection import train_test_split
 # Load iris dataset
 iris = load_iris()
 X = iris.data
+y = iris.target
 class_names = iris.target_names
 
 # Split dataset into training set and test set
-X_train, X_test = train_test_split(X, test_size=0.3, random_state=1)
+X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=0.3, random_state=1)
 
-class KMeans:
+# from sklearn.cluster import KMeans
+
+# kmeans = KMeans(n_clusters=3, max_iter=100)
+
+# kmeans.fit(X_train)
+
+# y_pred = kmeans.predict(X_test)
+
+# print('Accuracy: %.4f')
+
+
+class KMeans2:
     def __init__(self, K=3, max_iters=100):
         self.K = K
         self.max_iters = max_iters
@@ -50,6 +62,9 @@ class KMeans:
                     labels[idx] = cluster_idx
         return labels
 
+    def get_centroids(self):
+        return self.centroids
+
     def _get_centroids(self, clusters):
         centroids = np.zeros((self.K, self.n_features))
         for cluster_idx, cluster in enumerate(clusters):
@@ -80,16 +95,45 @@ class KMeans:
     
 
 # Create a KMeans object
-k = KMeans(K=3, max_iters=100)
-k.fit(X_train)
+k = KMeans2(K=3, max_iters=100)
+k.fit(X)
 
 # Predict the clusters for the data
-y_pred = k.predict(X_train)
+y_pred = k.predict(X)
 
 # Convert y_pred to int
-y_pred = y_pred.astype(int)
+labels = y_pred.astype(int)
 
-print("Predictions:", class_names[y_pred])
+import matplotlib.pyplot as plt
+
+
+# Create a figure with two subplots: 1 row, 2 columns
+fig, axs = plt.subplots(1, 2, figsize=(12, 5))  # Adjust figsize as needed
+
+# Plot 1: Original Data Points
+axs[0].scatter(X[:, 0], X[:, 1])
+axs[0].set_title('Original Data')
+axs[0].set_xlabel('Sepal Length')
+axs[0].set_ylabel('Sepal Width')
+
+# Plot 2: Clustered Data with Centroids
+# Plot data points colored by clusters
+colors = ['r', 'g', 'b']
+for i in range(3):
+    axs[1].scatter(X[labels == i, 0], X[labels == i, 1], c=colors[i], label=f'Cluster {i+1}')
+
+# Plot centroids
+centroids = k.get_centroids()
+axs[1].scatter(centroids[:, 0], centroids[:, 1], marker='x', c='black', label='Centroids')
+
+axs[1].set_title('K-Means Clustering')
+axs[1].set_xlabel('Sepal Length')
+axs[1].set_ylabel('Sepal Width')
+axs[1].legend()
+
+# Adjust layout and display the plot
+plt.tight_layout()
+plt.show()
 
 
 

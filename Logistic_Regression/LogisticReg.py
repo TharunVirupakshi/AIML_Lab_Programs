@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 def sigmoid(z):
     return 1.0 / (1.0 + np.exp(-z))
 
-# Cost function
+# Cost function / Loss function
 def cost_function(h, y):
     return (-y * np.log(h) - (1 - y) * np.log(1 - h))
 
@@ -33,10 +33,10 @@ def logistic_regression(X, y, num_iterations, learning_rate):
 # Load Iris dataset
 iris = datasets.load_iris()
 X = iris.data[:, :2]  # we only take the first two features (sepal length and width)
-y = (iris.target != 0) * 1  # make problem binary for simplicity
+y = iris.target # make problem binary for simplicity
 
 # Split the dataset
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4, random_state=9)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=9)
 
 # Standardize features
 sc = StandardScaler()
@@ -44,13 +44,25 @@ X_train_std = sc.fit_transform(X_train)
 X_test_std = sc.transform(X_test)
 
 # Perform logistic regression
-weights = logistic_regression(X_train_std, y_train, num_iterations=200, learning_rate=0.1)
+weights = logistic_regression(X_train_std, y_train, num_iterations=300, learning_rate=0.1)
 
 # Make predictions
 y_pred = sigmoid(np.dot(X_test_std, weights)) > 0.5
 
 # Print accuracy
 print('Accuracy: %.4f' % np.mean(y_pred == y_test))
+
+from sklearn.linear_model import LogisticRegression
+
+model = LogisticRegression()
+
+model.fit(X_train_std, y_train)
+
+y_pred = model.predict(X_test_std)
+
+# Print accuracy
+print('Accuracy sklearn: %.4f' % np.mean(y_pred == y_test))
+
 
 # Plot decision boundary
 x_min, x_max = X_train_std[:, 0].min() - 1, X_train_std[:, 0].max() + 1

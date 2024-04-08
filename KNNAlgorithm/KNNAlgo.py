@@ -44,10 +44,20 @@ knn.fit(X_train, y_train)
 # Predict the response for test dataset
 y_pred = knn.predict(X_test)
 
-print("Predictions:", class_names[y_pred])
+# print("Predictions:", class_names[y_pred])
+
+# from sklearn.neighbors import KNeighborsClassifier
+
+# knn_new = KNeighborsClassifier(3)
+
+# knn_new.fit(X_train, y_train)
+
+# y_pred = knn_new.predict(X_test)
+
+# print("Predictions New:", class_names[y_pred])
 
 
-# Optional confusion matrix
+# # Optional confusion matrix
 from sklearn.metrics import classification_report, confusion_matrix
 # Print confusion matrix
 print("\nConfusion Matrix:")
